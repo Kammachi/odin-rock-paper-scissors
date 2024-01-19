@@ -1,3 +1,5 @@
+let roundResult;
+
 function getComputerChoice() {      // Generates random number for the computer
     let randNum = Math.floor(Math.random() * 3);
     let computerChoice;
@@ -49,9 +51,13 @@ function gameRound(playerSelection, computerSelection) {    // Plays one round o
     return message;
 }
 
-
 function game() {
-    console.log("----- Rock Paper Scissors -----");
+    console.log("----- Rock Paper Scissors (best-of-five) -----");
+
+    let playerChoice;
+    let lost = 0;
+    let winnings = 0;
+    let ties = 0;
 
     for (let i = 0; i < 5; i++) {
         playerChoice = prompt("Choose - Rock, Paper or Scissors (case sensitive): ");      // Prompts user for their choice
@@ -63,6 +69,19 @@ function game() {
 
         console.log(gameRound(playerChoice, getComputerChoice()));      // Prints the result
 
+        switch (roundResult) {
+            case "Won":
+                winnings++;
+                break;
+            case "Tie":
+                ties++;
+                break;
+            case "Lost":
+                lost++;
+                break;
+        }
+
+        console.log(`| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost}`);
     }
 }
 
