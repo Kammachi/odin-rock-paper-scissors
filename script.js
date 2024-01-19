@@ -18,32 +18,53 @@ function getComputerChoice() {      // Generates random number for the computer
 }
 
 
-function gameRound(playerSelection, computerSelection) {  // Plays one round of the game
-    let result;
+function gameRound(playerSelection, computerSelection) {    // Plays one round of the game
+    let message;
 
-    switch (playerSelection, computerSelection) {
-        case ("Rock", "Scissors"):
-        case ("Paper", "Rock"):
-        case ("Scissors", "Paper"):
-            result = "You Win! " + `${playerSelection} beats ${computerSelection}.`;
-            break;
+    if (playerSelection === "Rock" && computerSelection === "Scissors" ||
+        playerSelection === "Paper" && computerSelection === "Rock" ||
+        playerSelection === "Scissors" && computerSelection === "Paper") {
+        
+        message = "You Win! " + `${playerSelection} beats ${computerSelection}.`;
+        roundResult = "Won";
 
-        case ("Rock", "Rock"):
-        case ("Paper", "Paper"):
-        case ("Scissors", "Scissors"):
-            result = "Tie.";
-            break;
+    } else if (playerSelection === "Rock" && computerSelection === "Rock" ||
+        playerSelection === "Paper" && computerSelection === "Paper" ||
+        playerSelection === "Scissors" && computerSelection === "Scissors") {
 
-        case ("Rock", "Paper"):
-        case ("Paper", "Scissors"):
-        case ("Scissors", "Rock"):
-            result = "You Lose. " + `${computerSelection} beats ${playerSelection}.`;
-            break;
+        message = "Tie.";
+        roundResult = "Tie";
+
+    } else if (playerSelection === "Rock" && computerSelection === "Paper" ||
+        playerSelection === "Paper" && computerSelection === "Scissors" ||
+        playerSelection === "Scissors" && computerSelection === "Rock") {
+
+        message = "You Lose. " + `${computerSelection} beats ${playerSelection}.`;
+        roundResult = "Lost";
+
+    } else {
+        message = "Error."
     }
 
-    return result;
+    return message;
 }
 
-let playerChoice = "Rock";
 
-console.log(gameRound(playerChoice, getComputerChoice())); // Returns the winner
+function game() {
+    console.log("----- Rock Paper Scissors -----");
+
+    for (let i = 0; i < 5; i++) {
+        playerChoice = prompt("Choose - Rock, Paper or Scissors (case sensitive): ");      // Prompts user for their choice
+        
+
+        while (playerChoice !== "Rock" && playerChoice !== "Paper" && playerChoice !== "Scissors") {
+            playerChoice = prompt("Choose - 'Rock', 'Paper' or 'Scissors' (CASE SENSITIVE): ");
+        }
+
+        console.log(gameRound(playerChoice, getComputerChoice()));      // Prints the result
+
+    }
+}
+
+
+game();
