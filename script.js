@@ -81,7 +81,25 @@ function game() {
                 break;
         }
 
-        console.log(`| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost}`);
+        if (winnings >= 3) {
+            console.log("--- You won 3 times! Congratulations, You win! ---");
+            break;
+        } else if (lost >= 3) {
+            console.log("--- You lost 3 times. Maybe next time ---");
+            break;
+        } else if (i >= 4) {
+            if (winnings > lost) {
+                console.log("--- You win! Congratulations! ---");
+            } else if (lost > winnings) {
+                console.log("--- You lost. Maybe next time ---");
+            } else {
+                console.log(`| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost} |`);
+                console.log(" --- Tie ---");
+                break;
+            }
+        }
+
+        console.log(`| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost} |`);
     }
 }
 
