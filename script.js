@@ -1,6 +1,4 @@
-let roundResult;
-
-function getComputerChoice() {      // Generates random number for the computer
+function getComputerChoice() {
     let randNum = Math.floor(Math.random() * 3);
     let computerChoice;
 
@@ -20,7 +18,12 @@ function getComputerChoice() {      // Generates random number for the computer
 }
 
 
-function gameRound(playerSelection, computerSelection) {    // Plays one round of the game
+let lost = 0;
+let winnings = 0;
+let ties = 0;
+
+
+function gameRound(playerSelection, computerSelection) {
     let message;
 
     if (playerSelection === "ROCK" && computerSelection === "SCISSORS" ||
@@ -28,21 +31,19 @@ function gameRound(playerSelection, computerSelection) {    // Plays one round o
         playerSelection === "SCISSORS" && computerSelection === "PAPER") {
         
         message = "You Win! " + `${playerSelection} beats ${computerSelection}.`;
-        roundResult = "Won";
+        winnings++;
 
-    } else if (playerSelection === "ROCK" && computerSelection === "ROCK" ||
-        playerSelection === "PAPER" && computerSelection === "PAPER" ||
-        playerSelection === "SCISSORS" && computerSelection === "SCISSORS") {
+    } else if (playerSelection === computerSelection) {
 
         message = "Tie.";
-        roundResult = "Tie";
+        ties++;
 
     } else if (playerSelection === "ROCK" && computerSelection === "PAPER" ||
         playerSelection === "PAPER" && computerSelection === "SCISSORS" ||
         playerSelection === "SCISSORS" && computerSelection === "ROCK") {
 
         message = "You Lose. " + `${computerSelection} beats ${playerSelection}.`;
-        roundResult = "Lost";
+        lost++;
 
     } else {
         message = "Error."
@@ -52,55 +53,51 @@ function gameRound(playerSelection, computerSelection) {    // Plays one round o
 }
 
 function game() {
-    console.log("----- Rock Paper Scissors (best-of-five) -----");
 
-    let playerChoice;
-    let lost = 0;
-    let winnings = 0;
-    let ties = 0;
+    const rock = document.createElement('button');
+    const paper = document.createElement('button');
+    const scissors = document.createElement('button');
+    const resultDisplay = document.createElement('div');
+    const score = document.createElement('div');
 
-    for (let i = 0; i < 5; i++) {
-        playerChoice = prompt("Choose - Rock, Paper or Scissors: ").toUpperCase();      // Prompts user for their choice
+    rock.textContent = "ROCK";
+    paper.textContent = "PAPER";
+    scissors.textContent = "SCISSORS";
+
+    score.style.fontSize = "32px";
+
+    document.body.appendChild(rock);
+    document.body.appendChild(paper);
+    document.body.appendChild(scissors);
+
+    buttons = document.querySelectorAll('button');
+
+    buttons.forEach(button => {
         
+        button.addEventListener('click', () => {
+            resultDisplay.textContent = gameRound(button.textContent, getComputerChoice());
 
-        while (playerChoice !== "ROCK" && playerChoice !== "PAPER" && playerChoice !== "SCISSORS") {
-            playerChoice = prompt("Choose - 'Rock', 'Paper' or 'Scissors': ").toUpperCase();
-        }
+            score.textContent = `| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost} |`;
 
-        console.log(gameRound(playerChoice, getComputerChoice()));      // Prints the result
-
-        switch (roundResult) {
-            case "Won":
-                winnings++;
-                break;
-            case "Tie":
-                ties++;
-                break;
-            case "Lost":
-                lost++;
-                break;
-        }
-
-        if (winnings >= 3) {
-            console.log("--- You won 3 times! Congratulations, You win! ---");
-            break;
-        } else if (lost >= 3) {
-            console.log("--- You lost 3 times. Maybe next time ---");
-            break;
-        } else if (i >= 4) {
-            if (winnings > lost) {
-                console.log("--- You win! Congratulations! ---");
-            } else if (lost > winnings) {
-                console.log("--- You lost. Maybe next time ---");
-            } else {
-                console.log(`| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost} |`);
-                console.log(" --- Tie ---");
-                break;
+            if (winnings >= 5) {
+                score.style.color = "green";
+                score.textContent = "YOU WIN!";
+                
+            } else if (lost >= 5) {
+                score.style.color = "red";
+                score.textContent = "YOU LOSE.";
             }
-        }
 
-        console.log(`| Winnings: ${winnings} | Ties: ${ties} | Lost: ${lost} |`);
-    }
+            if (winnings >= 5 || lost >= 5) {
+                rock.disabled = true;
+                paper.disabled = true;
+                scissors.disabled = true;
+            }
+        });
+    });
+
+    document.body.appendChild(resultDisplay);
+    document.body.appendChild(score);
 }
 
 
